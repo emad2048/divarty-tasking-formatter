@@ -1,0 +1,18 @@
+[
+  {
+    "primaryKey_": "ord-1",
+    "orderName": "FRAGORD 1 to IIIAC Change of Responsibility and Retirement Ceremony 2026",
+    "taskNumber": 1,
+    "actionType": "FORAC",
+    "bluf": "This FRAGORD retasks the Salute Battery from 1-82 FA to 3-16 FAR.",
+    "affectedUnits": "HHBn, 3-16 FAR, 6-56 ADAR"
+  },
+  {
+    "primary_key": "ord-3",
+    "order_name": "SEPARATION/ETS PHYSICALS RESPONSIBILITY",
+    "task_number": 3,
+    "action_type": "INFORM",
+    "bluf": "BN PAs will be responsible for Separation/ETS physicals.",
+    "affected_units": "HHBN, 1-82 FA, 3-16 FAR, 2-82 FA, 6-56 ADAR"
+  }
+]

@@ -404,38 +404,6 @@ def _find_section(sections: list[OutlineNode], name: str) -> OutlineNode | None:
 
 
 def _normalize(raw: _RawParse, warnings: list[str]) -> TaskingData:
-    extras: list[OutlineNode] = []
-    for node in raw.sections:
-        canonical = _canonical_section_name(node.title or "")
-        if canonical:
-            node.title = canonical
-        else:
-            warnings.append(
-                f"Unrecognized top-level section {node.title!r}; emitting as a best-effort extra section."
-            )
-            extras.append(node)
-
-    situation = _find_section(raw.sections, "SITUATION") or OutlineNode(
-        kind="section", title="SITUATION", omitted=True
-    )
-    situation.title = "SITUATION"
-    if not _has_content(situation):
-        situation.omitted = True
-        situation.children = []
-        situation.body = []
-
-    execution = _find_section(raw.sections, "EXECUTION") or OutlineNode(
-        kind="section", title="EXECUTION"
-    )
-    execution.title = "EXECUTION"
-    _normalize_execution(execution)
-
-    command = _find_section(raw.sections, "COMMAND AND SIGNAL") or OutlineNode(
-        kind="section", title="COMMAND AND SIGNAL"
-    )
-    command.title = "COMMAND AND SIGNAL"
-    _normalize_command_signal(command)
-
     designation = raw.designation if raw.designation in ("FORAC", "INFORM") else None
     if raw.designation and designation is None:
         warnings.append(f"Unrecognized task designation {raw.designation!r}.")
@@ -447,5 +415,50 @@ def _normalize(raw: _RawParse, warnings: list[str]) -> TaskingData:
         affected_unit_staff=raw.affected_unit_staff,
         nlt_dates=raw.nlt_dates,
         bluf=raw.bluf,
-        sections=[situation, execution, command, *extras],
+        sections=canonicalize_sections(raw.sections, warnings),
     )
+
+
+def canonicalize_sections(
+    sections: list[OutlineNode],
+    warnings: list[str] | None = None,
+) -> list[OutlineNode]:
+    """Force SITUATION / EXECUTION / COMMAND AND SIGNAL (plus extras).
+
+    Used by both Markdown parse and LLM JSON import so omitted subparagraphs
+    and letter order stay consistent.
+    """
+    warnings = warnings if warnings is not None else []
+    extras: list[OutlineNode] = []
+    for node in sections:
+        canonical = _canonical_section_name(node.title or "")
+        if canonical:
+            node.title = canonical
+        else:
+            warnings.append(
+                f"Unrecognized top-level section {node.title!r}; emitting as a best-effort extra section."
+            )
+            extras.append(node)
+
+    situation = _find_section(sections, "SITUATION") or OutlineNode(
+        kind="section", title="SITUATION", omitted=True
+    )
+    situation.title = "SITUATION"
+    if not _has_content(situation):
+        situation.omitted = True
+        situation.children = []
+        situation.body = []
+
+    execution = _find_section(sections, "EXECUTION") or OutlineNode(
+        kind="section", title="EXECUTION"
+    )
+    execution.title = "EXECUTION"
+    _normalize_execution(execution)
+
+    command = _find_section(sections, "COMMAND AND SIGNAL") or OutlineNode(
+        kind="section", title="COMMAND AND SIGNAL"
+    )
+    command.title = "COMMAND AND SIGNAL"
+    _normalize_command_signal(command)
+
+    return [situation, execution, command, *extras]

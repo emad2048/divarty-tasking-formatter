@@ -1,0 +1,72 @@
+{
+  "taskings": [
+    {
+      "task_number": 1,
+      "nlt_dates": "06 AUG 26",
+      "situation": "The 1st Cavalry Division Artillery provides support to the IIIAC Change of Responsibility ceremony at Fort Hood, TX.",
+      "execution": {
+        "concept_title": "Concept of Operations",
+        "concept_of_operations": "1st Cavalry Division provides support for the IIIAC Change of Responsibility.",
+        "tasks_to_subordinate_units": [
+          {
+            "unit": "1-82 FA",
+            "items": [{ "text": "None." }]
+          },
+          {
+            "unit": "3-16 FAR",
+            "items": [
+              { "text": "Provide salute battery with enough ammunition to support COR ceremony." },
+              { "text": "**Honor Guard:** Provide Honor Guard for cake cutting detail." }
+            ]
+          },
+          {
+            "unit": "HHBN",
+            "items": [
+              { "text": "Provide full Band for the COR Ceremony." }
+            ]
+          }
+        ],
+        "coordinating_instructions": [
+          { "text": "Units are required to be at the staging area NLT 0815." },
+          {
+            "text": "Inclement weather rehearsal will be conducted at III Armored Corps East Atrium TBD.",
+            "children": [
+              { "text": "Sub-item requiring roman numeral rendering." }
+            ]
+          }
+        ]
+      },
+      "command_and_signal": {
+        "command": [],
+        "signal": [
+          { "text": "The POC for this order is CPT Adam Isakson at adam.j.isakson.mil@army.mil." }
+        ]
+      }
+    },
+    {
+      "task_number": 3,
+      "situation": "SMRC is experiencing civilian staffing shortages.",
+      "execution": {
+        "concept_title": "Concept of the Operation",
+        "concept_of_operations": "1st Cavalry Division rapidly adapts to medical staffing constraints.",
+        "tasks_to_subordinate_units": [
+          {
+            "unit": "All",
+            "items": [
+              { "text": "Realign Separation/ETS physical workflows from SMRC to respective BN PAs." }
+            ]
+          }
+        ],
+        "coordinating_instructions": [
+          { "text": "Do not send Soldiers for walk-in/uncoordinated physicals." }
+        ]
+      },
+      "command_and_signal": {
+        "command": [],
+        "signal": [
+          { "text": "The Primary POC is 2LT Woojin Lee at woojin.lee13.mil@army.mil." }
+        ]
+      }
+    }
+  ]
+}
