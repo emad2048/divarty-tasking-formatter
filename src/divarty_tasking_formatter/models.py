@@ -43,7 +43,7 @@ class OutlineNode:
 
 @dataclass
 class TaskingData:
-    """Parsed content of one tasking. Always has three canonical sections after normalize."""
+    """One tasking: ontology index fields plus a canonical three-section body."""
 
     task_number: int | None
     designation: Designation | None
@@ -53,3 +53,23 @@ class TaskingData:
     bluf: str
     sections: list[OutlineNode]
     warnings: list[str] = field(default_factory=list)
+
+
+@dataclass
+class WeeklyOrderData:
+    """Full Weekly Tasking Order: letterhead, index of taskings, bodies, one signature."""
+
+    order_number: str
+    date_line: str
+    headquarters: str = "HQ, 1CD DIVARTY"
+    location: str = "FORT HOOD, TX"
+    references: list[str] = field(default_factory=list)
+    time_zone: str = "Central Daylight Time"
+    task_organization: str = "Omitted"
+    taskings: list[TaskingData] = field(default_factory=list)
+    acknowledge_name: str = ""
+    acknowledge_rank: str = "COL"
+    official_name: str = ""
+    official_title: str = "S3"
+    attachments: list[str] = field(default_factory=list)
+    classification: str = "UNCLASSIFIED"

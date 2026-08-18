@@ -1,0 +1,33 @@
+[
+  {
+    "primaryKey_": "re-1",
+    "title": "S3 estimate",
+    "orderName": "FRAGORD 1 to IIIAC Change of Responsibility and Retirement Ceremony 2026",
+    "orderReference": "ord-1",
+    "staffSection": "S3",
+    "runningEstimate": "Need salute battery retasked.",
+    "staffResponse": "3-16 FAR provides salute battery.",
+    "suspenseDate": "2026-08-06T12:00:00Z",
+    "orderPoc": "CPT Adam Isakson",
+    "approvedForDrafting": "2026-07-16T00:00:00Z",
+    "compilationStatus": true
+  },
+  {
+    "primary_key": "re-unapproved",
+    "order_reference": "ord-1",
+    "staff_section": "S2",
+    "running_estimate": "Should not appear in the LLM pack.",
+    "staff_response": "",
+    "approved_for_drafting": null,
+    "compilation_status": false
+  },
+  {
+    "primaryKey_": "re-3",
+    "orderReference": "ord-3",
+    "staffSection": "S1",
+    "staffResponse": "BN PAs assume ETS physicals.",
+    "suspenseDate": "EFFECTIVE IMMEDIATELY",
+    "orderPoc": "2LT Woojin Lee",
+    "approvedForDrafting": "2026-07-13T00:00:00Z"
+  }
+]

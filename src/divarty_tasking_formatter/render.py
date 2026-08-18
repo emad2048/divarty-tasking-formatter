@@ -88,6 +88,7 @@ def format_tasking(
     template_path: str | None = None,
     *,
     nlt_dates_value_bold: bool = False,
+    include_summary: bool = True,
 ) -> tuple[DocumentType, list[str]]:
     """Build a docx chunk for one tasking.
 
@@ -97,34 +98,28 @@ def format_tasking(
     Returns the document plus warnings from parse and render.
     """
     warnings = list(data.warnings)
+    doc, used_template = create_document(template_path)
+    add_classification_banner(doc, level="UNCLASSIFIED")
+    if include_summary:
+        render_summary_block(doc, data, nlt_dates_value_bold, used_template)
+    render_tasking_detail(doc, data, used_template, warnings)
+    return doc, warnings
+
+
+def create_document(template_path: str | None = None) -> tuple[DocumentType, bool]:
+    """Load the unit template if given; otherwise a blank TNR 12pt document.
+
+    A 26-42-001 .docx (letterhead / header-footer / named styles) should be
+    passed as template_path when available. Body outline is still drawn here.
+    """
     used_template = bool(template_path)
     if template_path:
-        # Template path: load letterhead/margins/named styles from the unit file.
         doc = Document(template_path)
     else:
-        # Fallback path: blank document + inline formatting from the spec below.
         doc = Document()
         _apply_fallback_defaults(doc)
         _remove_placeholder_paragraph(doc)
-
-    add_classification_banner(doc, level="UNCLASSIFIED")
-
-    _render_summary_block(doc, data, nlt_dates_value_bold, used_template)
-    _render_body_header(doc, data, used_template)
-
-    for index, section in enumerate(data.sections):
-        _render_node(
-            doc,
-            section,
-            section_number=index + 1,
-            parent_kind=None,
-            item_level=0,
-            item_number=1,
-            used_template=used_template,
-            warnings=warnings,
-        )
-
-    return doc, warnings
+    return doc, used_template
 
 
 def item_marker(level: int, number: int) -> str:
@@ -287,7 +282,7 @@ def _add_warning_run(paragraph: Paragraph, message: str) -> None:
     run.font.color.rgb = WARNING_COLOR
 
 
-def _render_summary_block(
+def render_summary_block(
     doc: DocumentType,
     data: TaskingData,
     nlt_dates_value_bold: bool,
@@ -319,6 +314,27 @@ def _render_summary_block(
     _apply_indent(bluf, "section")
     _add_run(bluf, "BLUF: ", bold=True)
     _add_run(bluf, data.bluf, bold=False)
+
+
+def render_tasking_detail(
+    doc: DocumentType,
+    data: TaskingData,
+    used_template: bool,
+    warnings: list[str],
+) -> None:
+    """TASK # header plus 1/2/3 body (no index/summary block)."""
+    _render_body_header(doc, data, used_template)
+    for index, section in enumerate(data.sections):
+        _render_node(
+            doc,
+            section,
+            section_number=index + 1,
+            parent_kind=None,
+            item_level=0,
+            item_number=1,
+            used_template=used_template,
+            warnings=warnings,
+        )
 
 
 def _render_body_header(doc: DocumentType, data: TaskingData, used_template: bool) -> None:

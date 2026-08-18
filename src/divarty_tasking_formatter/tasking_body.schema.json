@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://divarty.local/tasking-body.schema.json",
+  "title": "TaskingBody",
+  "description": "LLM output for one tasking body. Index fields (task number, FORAC/INFORM, title, affected units, BLUF) come from HHQ Orders Repo, not this object. Python assigns 1./a./(1)/i. markers.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "task_number": {
+      "type": "integer",
+      "description": "Must match HHQ Orders Repo taskNumber so the body can be joined to the index."
+    },
+    "nlt_dates": {
+      "type": "string",
+      "description": "Optional override when suspenseDate is wrong (e.g. EFFECTIVE IMMEDIATELY)."
+    },
+    "situation": { "type": "string" },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "concept_of_operations": { "type": "string" },
+        "concept_title": {
+          "type": "string",
+          "description": "Keep source wording: Concept of Operations or Concept of the Operation."
+        },
+        "tasks_to_subordinate_units": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unitBlock" }
+        },
+        "tasks_to_staff": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/unitBlock" }
+        },
+        "coordinating_instructions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/outlineItem" }
+        }
+      }
+    },
+    "command_and_signal": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "oneOf": [
+            { "type": "array", "items": { "$ref": "#/$defs/outlineItem" } },
+            { "type": "string" },
+            { "type": "null" }
+          ]
+        },
+        "signal": {
+          "oneOf": [
+            { "type": "array", "items": { "$ref": "#/$defs/outlineItem" } },
+            { "type": "string" },
+            { "type": "null" }
+          ]
+        }
+      }
+    }
+  },
+  "required": ["task_number"],
+  "$defs": {
+    "outlineItem": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string" },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/outlineItem" }
+        }
+      }
+    },
+    "unitBlock": {
+      "type": "object",
+      "required": ["unit"],
+      "properties": {
+        "unit": {
+          "type": "string",
+          "description": "HHBN, 3-16 FAR, 1-82 FA, 2-82 FA, 6-56 ADAR, S6, All, etc."
+        },
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/outlineItem" }
+        }
+      }
+    }
+  }
+}
